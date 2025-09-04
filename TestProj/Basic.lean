@@ -35,8 +35,8 @@ theorem add_le_cases : ∀ n m p q : Nat, n + m ≤ p + q → n ≤ p ∨ m ≤ 
   rw [← Nat.not_lt] at pr
   exact pr neq
 
-theorem g_finite_element_order_mul_index : [Group G] → [Fintype G] → (x : G) → (Nat.card G) % (orderOf x) = 0 := by
-  intros group fin x
+theorem g_finite_element_order_mul_index : [Fintype G] → (x : G) → (Nat.card G) % (orderOf x) = 0 := by
+  intros fin x
   have fo := isOfFinOrder_of_finite x
   let ps := Submonoid.powers x
   let sg : Subgroup G := {
@@ -57,7 +57,7 @@ theorem g_finite_element_order_mul_index : [Group G] → [Fintype G] → (x : G)
       have pf₃ : inv ∈ ps := by
         rw [Submonoid.mem_powers_iff]; unfold inv; rw [← np, ← pow_mul]; simp
       have pf₄ : inv = y⁻¹ := by
-        apply byContradiction; intro neq; exact @g_inv_l_unique G group y inv neq eq₂
+        apply byContradiction; intro neq; exact @g_inv_l_unique G _ y inv neq eq₂
       rw [← pf₄]; exact pf₃
   }
   have sizeEq : Nat.card ps = Nat.card sg := by
