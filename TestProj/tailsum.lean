@@ -1,3 +1,5 @@
+import Mathlib.Tactic
+
 def sum_simple (f : Nat → Nat) : Nat → Nat
 | 0              => f 0
 | n@(Nat.succ m) => f n + sum_simple f m
@@ -12,16 +14,12 @@ theorem sum_aux_expand : sum_aux m f n = m + sum_tail f n := by
   cases n
   . unfold sum_tail
     unfold sum_aux
-    simp
-    rw [Nat.add_comm]
+    ring
   . unfold sum_tail
     unfold sum_aux
     simp
     repeat rw [sum_aux_expand]
-    conv =>
-      rhs
-      rw [← Nat.add_assoc]
-      rw [Nat.add_comm m]
+    ring
 
 theorem sum_eq (f n) : sum_tail f n = sum_simple f n := by
   cases n
