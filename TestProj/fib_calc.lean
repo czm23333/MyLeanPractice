@@ -20,7 +20,7 @@ theorem fib_aux_eq : fib_aux a b n = fib_aux_2 a b n := by
     simp
   . unfold fib_aux
     unfold fib_aux_2
-    simp [Function.iterate_succ_apply, fib_aux_eq]
+    rw [Function.iterate_succ_apply, fib_aux_eq]
     unfold fib_aux_2
     rfl
 
@@ -41,4 +41,3 @@ theorem fib_eq (n : Nat) : fib2 n = fib n := by
   | x + 2 => unfold fib
              simp [← fib_eq]
              exact fib2_add_two
-

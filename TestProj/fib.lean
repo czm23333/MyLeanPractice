@@ -29,9 +29,6 @@ def fib_calc : SUBMISSION := by
                generalize psi^m = b
                unfold phi
                unfold psi
-               repeat rw [← mul_assoc]
-               repeat rw [div_mul_div_comm]
-               repeat rw [left_distrib, mul_sub_left_distrib]
-               repeat rw [right_distrib, mul_sub_right_distrib]
+               ring_nf
                simp
                ring

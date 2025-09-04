@@ -1,4 +1,3 @@
-import Std.Tactic.Basic
 import Mathlib.Logic.Basic
 
 inductive formula : Type
@@ -41,13 +40,10 @@ theorem dual_neg_eq_neg : eval (fneg m) (dual f) = ! eval m f := by
   | false_f => simp
   | not_f α => simp
                rw [dual_neg_eq_neg]
-               simp
   | or_f α β => simp
                 repeat rw [dual_neg_eq_neg]
-                rw [Bool.not_or]
   | and_f α β => simp
                  repeat rw [dual_neg_eq_neg]
-                 rw [Bool.not_and]
 
 theorem tt_dual_ff : SUBMISSION := by
   intros f tt
@@ -78,7 +74,10 @@ theorem tt_dual_ff : SUBMISSION := by
                 rw [← Bool.not_or]
                 simp
                 simp at ttp
+                have ttpr := ttp.resolve_left
+                simp at ttpr
                 assumption
+
   | and_f α β => unfold dual
                  unfold eval
                  unfold eval at tt

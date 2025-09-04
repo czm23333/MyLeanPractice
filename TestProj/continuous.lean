@@ -1,5 +1,4 @@
 import Mathlib.Data.Real.Basic
-import Mathlib.Init.Set
 
 /-
 Continuous function
@@ -8,7 +7,7 @@ there is δ > 0 s.t. |f(x) - f(a)| < ε whenever |x - a| < δ
 -/
 
 def continuous_at (f : ℝ → ℝ) (a : ℝ) :=
-∀ ε > 0, ∃ δ > 0, ∀ x, abs (x - a) < δ → abs (f x - f a) < ε
+∀ ε > 0, ∃ δ > 0, ∀ x, |x - a| < δ → |f x - f a| < ε
 
 -- Suppose f(x) is continuous at x = a and f(a) > 0. Then there is an
 -- open interval containing a s.t. f(x) > 0 over the whole interval
@@ -36,6 +35,7 @@ theorem continuous_function_about_an_open_interval : SUBMISSION := by
     let δpr := δp.right x₁ x₁p
     rw [abs_sub_lt_iff] at δpr
     let δprr := δpr.right
+    unfold y at δprr
     simp at δprr
     simp
     assumption

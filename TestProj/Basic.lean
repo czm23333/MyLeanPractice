@@ -1,8 +1,5 @@
 import Mathlib.Algebra.Group.Basic
-import Mathlib.GroupTheory.Subgroup.Basic
-import Mathlib.GroupTheory.Submonoid.Basic
 import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.Data.Finite.Basic
 import Mathlib.Data.Fintype.Card
 
 open Classical
@@ -22,13 +19,11 @@ theorem g_e_unique : ∀ e₁ : G, e₁ ≠ 1 → ¬ (∀ x : G, (e₁ * x = x �
 theorem g_inv_l_unique : ∀ x : G, ∀ inv₁ : G, inv₁ ≠ x⁻¹ → ¬ (inv₁ * x = 1) := by
   intros x inv₁ neq invp
   apply Ne.elim; exact neq
-  rw [← mul_left_inv x] at invp
   have eq₂ := congrArg (· * x⁻¹) invp; simp at eq₂; exact eq₂
 
 theorem g_inv_r_unique : ∀ x : G, ∀ inv₁ : G, inv₁ ≠ x⁻¹ → ¬ (x * inv₁ = 1) := by
   intros x inv₁ neq invp
   apply Ne.elim; exact neq
-  rw [← mul_right_inv x] at invp
   have eq₂ := congrArg (x⁻¹ * ·) invp; simp at eq₂; exact eq₂
 
 theorem add_le_cases : ∀ n m p q : Nat, n + m ≤ p + q → n ≤ p ∨ m ≤ q := by
@@ -58,9 +53,9 @@ theorem g_finite_element_order_mul_index : [Group G] → [Fintype G] → (x : G)
       have eq₂ : inv * y = 1 := by
         conv => lhs; arg 2; rw [← pow_one y]
         rw [← pow_add _ _ _, Nat.sub_add_cancel, eq₁]
-        simp [n2p]
+        exact n2p.left
       have pf₃ : inv ∈ ps := by
-        simp [Submonoid.mem_powers_iff]; rw [← np, ← pow_mul]; simp
+        rw [Submonoid.mem_powers_iff]; unfold inv; rw [← np, ← pow_mul]; simp
       have pf₄ : inv = y⁻¹ := by
         apply byContradiction; intro neq; exact @g_inv_l_unique G group y inv neq eq₂
       rw [← pf₄]; exact pf₃
@@ -69,7 +64,8 @@ theorem g_finite_element_order_mul_index : [Group G] → [Fintype G] → (x : G)
     rw [Finite.card_eq]
     let equ : Equiv ↥ps ↥sg := { toFun := id, invFun := id, left_inv := Eq.refl, right_inv := Eq.refl }
     apply Nonempty.intro; exact equ
-  rw [Nat.card_eq_fintype_card, ← Subgroup.index_mul_card sg, ← Nat.card_eq_fintype_card, ← sizeEq, ← Nat.card_submonoidPowers]
+  rw [← Subgroup.index_mul_card sg, ← sizeEq, ← Nat.card_submonoidPowers]
+  unfold ps
   simp
 
 example : {T : Type} → {P : T → Prop} → {Q : T → Prop} → (∀ x, ¬ P x → Q x) → (∀ x, ¬ Q x) → (∀ x, P x) := by

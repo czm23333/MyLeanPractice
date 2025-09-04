@@ -16,7 +16,6 @@ theorem horner_expand : horner_loop 0 x tail + head * x ^ List.length tail = hor
   . simp
     unfold horner_loop
     simp
-    simp [Nat.pow_zero]
   . simp
     unfold horner_loop
     simp

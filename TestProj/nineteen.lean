@@ -1,5 +1,5 @@
 import Init.Data.Nat.Dvd
-import Mathlib.Data.Nat.Prime
+import Mathlib.Data.Nat.Prime.Defs
 import Mathlib.Logic.Basic
 import Mathlib.Tactic.FinCases
 
@@ -12,8 +12,7 @@ theorem nineteen_dvd (a : Nat) : 19 ∣ a ↔ 19 ∣ 4 * a := by
     let tmp : Nat.Prime 19 := by decide
     let tmp2 := (Prime.dvd_mul (Nat.Prime.prime tmp)).mp ntfd
     match tmp2 with
-    | Or.inl fp => exfalso
-                   norm_num at fp
+    | Or.inl fp => contradiction
     | Or.inr ap => assumption
 
 theorem nineteen_dvd' (a b : Nat) : 19 ∣ 100 * a + b ↔ 19 ∣ a + 4 * b := by
